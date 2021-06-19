@@ -17,7 +17,8 @@
   <script src="js/GLTFLoader.js"></script>
   <script src="js/OrbitControls.js"></script>
   <script src="js/Tween.js"></script>
-  
+  <script src="js/data.js"></script>
+
 
   <div style="text-align: -webkit-center; position: absolute;  z-index: 0; width: 98%">
     <h1 id="objetoEstudioTitulo" style="color:rgb(0, 0, 0)">Objeto de estudio</h1>
@@ -48,23 +49,7 @@
 <script>
 
 
-data = [
-    {"nombre":"Anfibios", "contenido":[
-    {"titulo":"FREE ASPECT", "informacion":"holaaaaa holaaaaaa my text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
-    {"titulo":"titulo 2", "informacion":"Informacion 2 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
-    {"titulo":"titulo 3", "informacion":"Informacion 3 Lorem Ipsum is simply dummy text of the printing and typesettin industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
-    {"titulo":"titulo 4", "informacion":"Informacion 4 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
-    {"titulo":"titulo 5", "informacion":"Informacion 5 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
-    {"titulo":"titulo 6", "informacion":"Informacion 6 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
-    {"titulo":"titulo 7", "informacion":"Informacion 7 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
-    {"titulo":"titulo 11", "informacion":"Informacion 11 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}
-  ]},
-  {"nombre":"Historia", "contenido":[
-    {"titulo":"titulo 1", "informacion":"informacion informacion informacion"},
-    {"titulo":"titulo 2", "informacion":"informacion informacion informacion"},
-    {"titulo":"titulo 3", "informacion":"informacion informacion informacion"}
-  ]}
-  ]
+
 
   var cursos=data.map(function(curso) {
     return {    
@@ -202,7 +187,7 @@ data = [
 
     var loader = new THREE.GLTFLoader();
     
-    loader.load('3dmodels/eelAmerican/eelAmerican.gltf', function (gltf) {
+    loader.load('3dmodels/Stygimoloch/stygimoloch.gltf', function (gltf) {
       obj = gltf.scene;
       obj.scale.set(25, 25, 25);
       obj.position.set(0, 0, 0);
