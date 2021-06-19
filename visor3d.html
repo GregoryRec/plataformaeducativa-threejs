@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <!-- ** Basic Page Needs ** -->
+  <meta charset="utf-8">
+  <title>Visor 3D</title>
+  <!-- ** Mobile Specific Metas ** -->
+  <link rel="stylesheet" type="text/css" href="./css/stylesheet.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+</head>
+
+<body  style="font-family: 'Roboto', sans-serif; background-color: rgb(255, 255, 255);">
+  <!-- Three.js-->
+  <script src="js/three.min.js"></script>
+  <script src="js/GLTFLoader.js"></script>
+  <script src="js/OrbitControls.js"></script>
+  <script src="js/Tween.js"></script>
+  
+
+  <div style="text-align: -webkit-center; position: absolute;  z-index: 0; width: 98%">
+    <h1 id="objetoEstudioTitulo" style="color:rgb(0, 0, 0)">Objeto de estudio</h1>
+      <div id="loading" class="container" style="background-size: 200px 200px; background-repeat: no-repeat;  background-position: center;
+     background-image: url('./skybox/loading.gif'); width: fit-content;">
+        <div class="visor3d" id="3dvisor"></div>
+      </div>
+        <div class="scrollmenu" id="menu-info"></div> 
+  </div>
+  <div style="float: right; text-align: center; z-index: 2; position: relative;">
+    <h5 style="color:rgb(0, 0, 0)">Luz Ambiental</h5>
+    <span class="color-picker">
+      <label for="colorPicker">
+        <input type="color" value="#FFFFFF" id="colorPicker">
+      </label>
+    </span>
+    
+    <div id="infobox" class="infobox"> 
+      <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+    </div>
+    
+  </div>
+  
+</body>
+
+
+<!--3d visor-->
+<script>
+
+
+data = [
+    {"nombre":"Anfibios", "contenido":[
+    {"titulo":"FREE ASPECT", "informacion":"holaaaaa holaaaaaa my text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
+    {"titulo":"titulo 2", "informacion":"Informacion 2 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
+    {"titulo":"titulo 3", "informacion":"Informacion 3 Lorem Ipsum is simply dummy text of the printing and typesettin industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
+    {"titulo":"titulo 4", "informacion":"Informacion 4 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
+    {"titulo":"titulo 5", "informacion":"Informacion 5 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
+    {"titulo":"titulo 6", "informacion":"Informacion 6 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
+    {"titulo":"titulo 7", "informacion":"Informacion 7 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."},
+    {"titulo":"titulo 11", "informacion":"Informacion 11 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}
+  ]},
+  {"nombre":"Historia", "contenido":[
+    {"titulo":"titulo 1", "informacion":"informacion informacion informacion"},
+    {"titulo":"titulo 2", "informacion":"informacion informacion informacion"},
+    {"titulo":"titulo 3", "informacion":"informacion informacion informacion"}
+  ]}
+  ]
+
+  var cursos=data.map(function(curso) {
+    return {    
+      nombre:curso.nombre,
+      contenido:curso.contenido
+    }
+  });
+
+  var objetoEstudioTitulo = document.getElementById("objetoEstudioTitulo");
+  objetoEstudioTitulo.innerHTML = cursos[0].nombre;
+  var infoBox =  document.getElementById("infobox");
+  var menuInfo = document.getElementById("menu-info");
+    for(contenido of cursos[0].contenido) {
+      let btnContainer = document.createElement("div");
+      btnContainer.setAttribute("class","menu-button-container");
+
+      let btn = document.createElement("a");
+      console.log(contenido.titulo)
+      btn.innerHTML = contenido.titulo;
+      btn.setAttribute("id",contenido.titulo);
+      btn.setAttribute("onclick", "getInfo(id)");
+      btn.setAttribute("class","menu-button");
+      btn.setAttribute("href","#");
+      btnContainer.appendChild(btn);
+      menuInfo.appendChild(btnContainer);
+    }
+
+    function getInfo(titulo) {
+      cursos[0].contenido.find(contenido => {
+        if(contenido.titulo == titulo) {
+      infoBox.style.visibility = "visible";
+      infoBox.style.opacity = 1
+      infoBox.innerHTML = contenido.informacion;
+      
+      var closeBtn = document.createElement("span");
+      closeBtn.setAttribute("class","closebtn");
+      closeBtn.setAttribute("onclick", "this.parentElement.style.opacity=0;");
+      closeBtn.innerHTML = "&times;";
+      infoBox.appendChild(closeBtn);
+          console.log(contenido.informacion)
+        }
+    })
+  }
+
+   
+  var scene, camera, renderer, mixer, clock, lightsColor, marker, pos;
+  const markerGeo = new THREE.SphereGeometry( 2, 32, 32 );
+  const markerMat = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+  marker = new THREE.Mesh( markerGeo, markerMat );
+  marker.name = "marker";
+  const group = new THREE.Group();
+
+  var raycaster, mouse = { x : 0, y : 0 };
+
+  var INTERSECTED;
+  const coneGeometry = new THREE.ConeGeometry(25, 25, 25);
+  
+  // Create an AnimationMixer, and get the list of AnimationClip instances
+
+
+  var maxRendererHeight = 400;
+  var maxRendererWidth = 500;
+  var minRendererHeight = 300;
+  var minRendererWidth = 300;
+  const material = new THREE.MeshNormalMaterial();
+  var mobileWidth = minRendererWidth/2;
+
+
+  function init() {
+
+    clock = new THREE.Clock();
+    var visor = document.getElementById("3dvisor");
+
+    console.log(visor.style.getPropertyValue('--visor3d-height'));
+    scene = new THREE.Scene();
+
+    scene.add(marker);
+    camera = new THREE.PerspectiveCamera(35, maxRendererWidth / maxRendererHeight, 1, 2000);
+    camera.rotation.y = 45 / 180 * Math.PI;
+    
+    camera.position.x = 800;
+    camera.position.y = 100;
+    camera.position.z = 10;
+
+    
+    renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setSize(maxRendererWidth, maxRendererHeight);
+
+    visor.appendChild(renderer.domElement);
+
+
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.zoomSpeed = 0.5;
+    controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+    controls.dampingFactor = 0.1;
+    //Esto bloquea el giro en los ejes Z y X
+    //controls.minPolarAngle = Math.PI / 2; 
+    //controls.maxPolarAngle = Math.PI / 2;
+
+    controls.minDistance = 300; // Lo máximo que se puede acercar
+    controls.maxDistance = 1000; // Lo máximo que se puede alejar
+
+    controls.update();
+    hlight = new THREE.AmbientLight(0x404040, 1);
+    scene.add(hlight);
+    directionalLight = new THREE.DirectionalLight(lightsColor, 1);
+    directionalLight.position.set(0, 1, 0);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
+    light = new THREE.PointLight(0xc4c4c4, 1);
+    light.position.set(0, 300, 500);
+    scene.add(light);
+    light2 = new THREE.PointLight(0xc4c4c4, 1);
+    light2.position.set(500, 100, 0);
+    scene.add(light2);
+    light3 = new THREE.PointLight(0xc4c4c4, 1);
+    light3.position.set(0, 100, -500);
+    scene.add(light3);
+    light4 = new THREE.PointLight(0xc4c4c4, 1);
+    light4.position.set(-500, 300, 500);
+    scene.add(light4);
+
+    light5 = new THREE.PointLight(0xc4c4c4, 1);
+    light5.position.set(0, -300, 100);
+    scene.add(light5);
+
+
+    //Si se quiere agregar textura de fondo al canvas
+    /*
+    const textureLoader = new THREE.TextureLoader();
+    const bgTexture = textureLoader.load('skybox/milky-way-2k.png');
+    scene.background = bgTexture;
+    */    
+
+    var loader = new THREE.GLTFLoader();
+    
+    loader.load('3dmodels/eelAmerican/eelAmerican.gltf', function (gltf) {
+      obj = gltf.scene;
+      obj.scale.set(25, 25, 25);
+      obj.position.set(0, 0, 0);
+      obj.rotation.set(0, 1, 0);
+
+      mixer = new THREE.AnimationMixer(gltf.scene);
+      group.add(obj);
+      var action = mixer.clipAction(gltf.animations[0]);
+      action.play();
+      scene.add(group);
+      
+      document.getElementById("loading").style.backgroundImage = '';
+      animate();
+    });
+    raycaster = new THREE.Raycaster();
+    renderer.domElement.addEventListener( 'mousemove', highlightObject, false );
+    renderer.domElement.addEventListener( 'dblclick', moveCamera, false );
+  }
+
+  function moveCamera ( e ) {
+// Step 1: Detect light helper
+    //1. sets the mouse position with a coordinate system where the center
+    //   of the screen is the origin
+    mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+
+    //2. set the picking ray from the camera position and mouse coordinates
+    raycaster.setFromCamera( mouse, camera );    
+
+    //3. compute intersections (note the 2nd parameter)
+    var intersects = raycaster.intersectObjects( scene.children, true );
+
+    if ( intersects.length > 0 ) {
+      pos =  intersects[0].point;
+      tweenCamera(camera,  pos, 3000);
+      
+    }
+}
+
+
+function tweenCamera(camera, position, duration) {     
+
+    var initScale = { x: 0, y:0, z:0};
+    initScale = obj.scale;
+    
+    var endScale = { x: 40, y:40, z:40};
+
+    console.log(initScale);
+        // backup original rotation
+    var startRotation = camera.quaternion.clone();
+
+    // final rotation (with lookAt)
+    camera.lookAt( position );
+    var endRotation = camera.quaternion.clone();
+
+    // revert to original rotation
+    camera.quaternion.copy( startRotation );
+
+    controls.target = position;
+    // Tween
+    new TWEEN.Tween( camera.quaternion ).to( endRotation, 600 ).onComplete( function () {
+      new TWEEN.Tween(initScale).to(endScale,600).onUpdate(function(){
+        obj.scale = initScale;}).start();
+    } ).start();
+
+
+     
+}
+
+  function highlightObject ( e ) {
+// Step 1: Detect light helper
+    //1. sets the mouse position with a coordinate system where the center
+    //   of the screen is the origin
+    mouse.x = ( (event.clientX - event.target.getBoundingClientRect().left) /event.currentTarget.width ) * 2 - 1;
+   mouse.y = - ( (event.clientY - event.target.getBoundingClientRect().top) / event.currentTarget.height ) * 2 + 1;
+    
+    //2. set the picking ray from the camera position and mouse coordinates
+    raycaster.setFromCamera( mouse, camera );    
+
+    //3. compute intersections (note the 2nd parameter)
+    var intersects = raycaster.intersectObjects( group.children, true );
+
+    if ( intersects.length > 0 ) {
+      marker.visible = true;
+      marker.lookAt(intersects[0].face.normal);  // First look At to normal
+      marker.position.copy( intersects[0].point )  // After give position to marker
+      if ( INTERSECTED != intersects[ 0 ].object) {
+          INTERSECTED = intersects[ 0 ].object;
+          //INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+          //INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+          //INTERSECTED.material.emissive.setHex( 0xff0000 );
+        }
+      }
+      else {
+        marker.visible = false;
+        if ( INTERSECTED  ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+					INTERSECTED = null;
+      }
+}
+
+
+
+  function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+
+    
+  }
+
+
+  function animate() {
+    light.color = new THREE.Color(lightsColor);
+    light2.color = new THREE.Color(lightsColor);
+    light3.color = new THREE.Color(lightsColor);
+    light4.color = new THREE.Color(lightsColor);
+    light5.color = new THREE.Color(lightsColor);
+    if (window.innerWidth <= mobileWidth * 2) {
+      renderer.setSize(minRendererWidth, minRendererHeight);
+    }
+    else {
+      renderer.setSize(maxRendererWidth, maxRendererHeight);
+    }
+
+    requestAnimationFrame(animate);
+    controls.update();
+    TWEEN.update();
+    var delta = clock.getDelta();
+
+    if (mixer) mixer.update(delta);
+
+
+    renderer.render(scene, camera);
+
+  }
+
+
+  //color picker
+  document.querySelectorAll('input[type=color]').forEach(function (picker) {
+
+    var targetLabel = document.querySelector('label[for="' + picker.id + '"]');
+    lightsColor = picker.value;
+    picker.addEventListener('input', function () {
+      console.log("value");
+      lightsColor = picker.value;
+    });
+
+
+  });
+
+  init();
+
+</script>
+
+
+</html>
