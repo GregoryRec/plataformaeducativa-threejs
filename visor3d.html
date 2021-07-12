@@ -8,10 +8,10 @@
   <!-- ** Mobile Specific Metas ** -->
   <link rel="stylesheet" type="text/css" href="./css/stylesheet.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
 </head>
 
-<body  style="font-family: 'Roboto', sans-serif; background-color: rgb(255, 255, 255);">
+<body style="font-family: 'Roboto', sans-serif; background-color: rgb(255, 255, 255);">
   <!-- Three.js-->
   <script src="js/three.min.js"></script>
   <script src="js/GLTFLoader.js"></script>
@@ -22,26 +22,45 @@
 
   <div style="text-align: -webkit-center; position: absolute;  z-index: 0; width: 98%">
     <h1 id="objetoEstudioTitulo" style="color:rgb(0, 0, 0)">Objeto de estudio</h1>
-      <div id="loading" class="container" style="background-size: 200px 200px; background-repeat: no-repeat;  background-position: center;
+    <div id="loading" class="container" style="background-size: 200px 200px; background-repeat: no-repeat;  background-position: center;
      background-image: url('./skybox/loading.gif'); width: fit-content;">
-        <div class="visor3d" id="3dvisor"></div>
-      </div>
-        <div class="scrollmenu" id="menu-info"></div> 
+      <div class="visor3d" id="3dvisor"></div>
+    </div>
+    <div class="scrollmenu" id="menu-info"></div>
   </div>
   <div style="float: right; text-align: center; z-index: 2; position: relative;">
-    <h5 style="color:rgb(0, 0, 0)">Luz Ambiental</h5>
+    <h3 style="color:rgb(0, 0, 0)">Luz Ambiental</h3>
     <span class="color-picker">
       <label for="colorPicker">
         <input type="color" value="#FFFFFF" id="colorPicker">
       </label>
     </span>
-    
-    <div id="infobox" class="infobox"> 
+    <h3 style="color:#000000">Escala (Local)</h3>
+    <a class="menu-button" onclick="escalar(1)">X1</a>
+    <a class="menu-button" onclick="escalar(2)">X2</a>
+    <a class="menu-button" onclick="escalar(3)">X3</a>
+    <h3 style="color:rgb(0, 0, 0)">Rotar (Local)</h3>
+    <a class="menu-button" onclick="rotar('ArrowLeft')">↺</a>
+    <a class="menu-button" onclick="rotar('ArrowRight')">↻</a>
+    <a class="menu-button" onclick="rotar('ArrowUp')">↷</a>
+    <a class="menu-button" onclick="rotar('ArrowDown')">↶</a>
+    <h3 style="color:rgb(0, 0, 0)">Trasladar (Local)</h3>
+    <a class="menu-button" onclick="trasladar('ArrowLeft')">←</a>
+    <a class="menu-button" onclick="trasladar('ArrowRight')">→</a>
+    <a class="menu-button" onclick="trasladar('ArrowUp')">↑</a>
+    <a class="menu-button" onclick="trasladar('ArrowDown')">↓</a>
+    <h3 style="color:rgb(0, 0, 0)">Animación</h3>
+    <a class="menu-button" onclick="controlAnimacion('pausa')">⏵︎</a>
+    <a class="menu-button" onclick="controlAnimacion('play')">⏸︎</a>
+
+
+
+  </div>
+  <div style="float: left; text-align: center; z-index: 2; position: relative;">
+    <div id="infobox" class="infobox">
       <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
     </div>
-    
   </div>
-  
 </body>
 
 
@@ -51,62 +70,62 @@
 
 
 
-  var cursos=data.map(function(curso) {
-    return {    
-      nombre:curso.nombre,
-      contenido:curso.contenido
+  var cursos = data.map(function (curso) {
+    return {
+      nombre: curso.nombre,
+      contenido: curso.contenido
     }
   });
 
   var objetoEstudioTitulo = document.getElementById("objetoEstudioTitulo");
   objetoEstudioTitulo.innerHTML = cursos[0].nombre;
-  var infoBox =  document.getElementById("infobox");
+  var infoBox = document.getElementById("infobox");
   var menuInfo = document.getElementById("menu-info");
-    for(contenido of cursos[0].contenido) {
-      let btnContainer = document.createElement("div");
-      btnContainer.setAttribute("class","menu-button-container");
+  for (contenido of cursos[0].contenido) {
+    let btnContainer = document.createElement("div");
+    btnContainer.setAttribute("class", "menu-button-container");
 
-      let btn = document.createElement("a");
-      console.log(contenido.titulo)
-      btn.innerHTML = contenido.titulo;
-      btn.setAttribute("id",contenido.titulo);
-      btn.setAttribute("onclick", "getInfo(id)");
-      btn.setAttribute("class","menu-button");
-      btn.setAttribute("href","#");
-      btnContainer.appendChild(btn);
-      menuInfo.appendChild(btnContainer);
-    }
+    let btn = document.createElement("a");
+    console.log(contenido.titulo)
+    btn.innerHTML = contenido.titulo;
+    btn.setAttribute("id", contenido.titulo);
+    btn.setAttribute("onclick", "getInfo(id)");
+    btn.setAttribute("class", "menu-button");
+    btn.setAttribute("href", "#");
+    btnContainer.appendChild(btn);
+    menuInfo.appendChild(btnContainer);
+  }
 
-    function getInfo(titulo) {
-      cursos[0].contenido.find(contenido => {
-        if(contenido.titulo == titulo) {
-      infoBox.style.visibility = "visible";
-      infoBox.style.opacity = 1
-      infoBox.innerHTML = contenido.informacion;
-      
-      var closeBtn = document.createElement("span");
-      closeBtn.setAttribute("class","closebtn");
-      closeBtn.setAttribute("onclick", "this.parentElement.style.opacity=0;");
-      closeBtn.innerHTML = "&times;";
-      infoBox.appendChild(closeBtn);
-          console.log(contenido.informacion)
-        }
+  function getInfo(titulo) {
+    cursos[0].contenido.find(contenido => {
+      if (contenido.titulo == titulo) {
+        infoBox.style.visibility = "visible";
+        infoBox.style.opacity = 1
+        infoBox.innerHTML = contenido.informacion;
+
+        var closeBtn = document.createElement("span");
+        closeBtn.setAttribute("class", "closebtn");
+        closeBtn.setAttribute("onclick", "this.parentElement.style.opacity=0;");
+        closeBtn.innerHTML = "&times;";
+        infoBox.appendChild(closeBtn);
+        console.log(contenido.informacion)
+      }
     })
   }
 
-   
-  var scene, camera, renderer, mixer, clock, lightsColor, marker, pos;
-  const markerGeo = new THREE.SphereGeometry( 2, 32, 32 );
-  const markerMat = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-  marker = new THREE.Mesh( markerGeo, markerMat );
+
+  var scene, camera, renderer, mixer, clock, lightsColor, marker, pos, obj, tieneAnimacion, action;
+  const markerGeo = new THREE.SphereGeometry(2, 32, 32);
+  const markerMat = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+  marker = new THREE.Mesh(markerGeo, markerMat);
   marker.name = "marker";
   const group = new THREE.Group();
 
-  var raycaster, mouse = { x : 0, y : 0 };
+  var raycaster, mouse = { x: 0, y: 0 };
 
   var INTERSECTED;
   const coneGeometry = new THREE.ConeGeometry(25, 25, 25);
-  
+
   // Create an AnimationMixer, and get the list of AnimationClip instances
 
 
@@ -114,8 +133,9 @@
   var maxRendererWidth = 500;
   var minRendererHeight = 300;
   var minRendererWidth = 300;
+  var minScale = 50;
   const material = new THREE.MeshNormalMaterial();
-  var mobileWidth = minRendererWidth/2;
+  var mobileWidth = minRendererWidth / 2;
 
 
   function init() {
@@ -127,14 +147,14 @@
     scene = new THREE.Scene();
 
     scene.add(marker);
-    camera = new THREE.PerspectiveCamera(35, maxRendererWidth / maxRendererHeight, 1, 2000);
+    camera = new THREE.PerspectiveCamera(65, maxRendererWidth / maxRendererHeight, 1, 2000);
     camera.rotation.y = 45 / 180 * Math.PI;
-    
+
     camera.position.x = 800;
     camera.position.y = 100;
     camera.position.z = 10;
 
-    
+
     renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setClearColor(0x000000, 0);
     renderer.setSize(maxRendererWidth, maxRendererHeight);
@@ -150,7 +170,7 @@
     //controls.minPolarAngle = Math.PI / 2; 
     //controls.maxPolarAngle = Math.PI / 2;
 
-    controls.minDistance = 300; // Lo máximo que se puede acercar
+    controls.minDistance = 200; // Lo máximo que se puede acercar
     controls.maxDistance = 1000; // Lo máximo que se puede alejar
 
     controls.update();
@@ -183,110 +203,173 @@
     const textureLoader = new THREE.TextureLoader();
     const bgTexture = textureLoader.load('skybox/milky-way-2k.png');
     scene.background = bgTexture;
-    */    
+    */
 
     var loader = new THREE.GLTFLoader();
-    
-    loader.load('3dmodels/Stygimoloch/stygimoloch.gltf', function (gltf) {
+
+    //var ruta = '3dmodels/eelAmerican/eelAmerican.gltf';
+    var ruta = '3dmodels/Stygimoloch/stygimoloch.gltf';
+    loader.load(ruta, function (gltf) {
       obj = gltf.scene;
-      obj.scale.set(25, 25, 25);
+
+      obj.scale.set(minScale, minScale, minScale);
       obj.position.set(0, 0, 0);
       obj.rotation.set(0, 1, 0);
 
-      mixer = new THREE.AnimationMixer(gltf.scene);
       group.add(obj);
-      var action = mixer.clipAction(gltf.animations[0]);
-      action.play();
+
+      mixer = new THREE.AnimationMixer(gltf.scene);
+      if (gltf.animations[0] != null) {
+        tieneAnimacion = true;
+        console.log(tieneAnimacion);
+        action = mixer.clipAction(gltf.animations[0]);
+        action.play();
+      }
+      else tieneAnimacion = false;
+
       scene.add(group);
-      
+
       document.getElementById("loading").style.backgroundImage = '';
       animate();
     });
     raycaster = new THREE.Raycaster();
-    renderer.domElement.addEventListener( 'mousemove', highlightObject, false );
-    renderer.domElement.addEventListener( 'dblclick', moveCamera, false );
+    renderer.domElement.addEventListener('mousemove', moverPuntero, false);
+    renderer.domElement.addEventListener('dblclick', orientarCamara, false);
+
+    document.body.addEventListener('keydown', trasladar, false);
   }
 
-  function moveCamera ( e ) {
-// Step 1: Detect light helper
-    //1. sets the mouse position with a coordinate system where the center
-    //   of the screen is the origin
-    mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
-
-    //2. set the picking ray from the camera position and mouse coordinates
-    raycaster.setFromCamera( mouse, camera );    
-
-    //3. compute intersections (note the 2nd parameter)
-    var intersects = raycaster.intersectObjects( scene.children, true );
-
-    if ( intersects.length > 0 ) {
-      pos =  intersects[0].point;
-      tweenCamera(camera,  pos, 3000);
-      
+  function trasladar(e) {
+    if (e.key == null || e.key == undefined) e = { key: e };
+    console.log(e.key);
+    switch (e.key) {
+      case 'ArrowUp':
+        obj.translateZ(-5);
+        break;
+      case 'ArrowDown':
+        obj.translateZ(5);
+        break;
+      case 'ArrowLeft':
+        obj.translateX(-5);
+        break;
+      case 'ArrowRight':
+        obj.translateX(5);
+        break;
     }
-}
+  }
+
+  function rotar(direction) {
+    switch (direction) {
+      case 'ArrowUp':
+        obj.rotateX(-0.1);
+        break;
+      case 'ArrowDown':
+        obj.rotateX(0.1);
+        break;
+      case 'ArrowLeft':
+        obj.rotateY(-0.1);
+        break;
+      case 'ArrowRight':
+        obj.rotateY(0.1);
+        break;
+    }
+  }
+
+  function orientarCamara(e) {
+    //1. se calculan las coordenadas del mouse
+    mouse.x = ((event.clientX - event.target.getBoundingClientRect().left) / event.currentTarget.width) * 2 - 1;
+    mouse.y = - ((event.clientY - event.target.getBoundingClientRect().top) / event.currentTarget.height) * 2 + 1;
 
 
-function tweenCamera(camera, position, duration) {     
+    //2. se lanza un raycast desde la cámara en dirección hacia las coordenadas del mouse
+    raycaster.setFromCamera(mouse, camera);
 
-    var initScale = { x: 0, y:0, z:0};
-    initScale = obj.scale;
-    
-    var endScale = { x: 40, y:40, z:40};
+    //3. se calcula la intersección
+    var intersects = raycaster.intersectObjects(group.children, true);
 
-    console.log(initScale);
-        // backup original rotation
+    if (intersects.length > 0) {
+      pos = intersects[0].point;
+      tweenCamera(camera, pos, 3000);
+
+    }
+  }
+
+  function controlAnimacion(comando) {
+    if (comando == "play") action.paused = true;
+    else action.paused = false;
+  }
+
+  function escalar(factor) {
+    console.log(factor);
+
+    //Se almacena la escala inicial
+    var escalaInicial = { x: obj.scale.x, y: obj.scale.y, z: obj.scale.z };
+
+    //Guardamos la escala final que es la escala mínima por el factor
+    var escalaFinal = { x: minScale * factor, y: minScale * factor, z: minScale * factor };
+
+    new TWEEN.Tween(escalaInicial).to(escalaFinal, 600).onUpdate(function () {
+      //La escala toma un nuevo valor cada frame por segundo y le asignamos al objeto
+      obj.scale.set(escalaInicial.x, escalaInicial.y, escalaInicial.z);
+      console.log(escalaInicial);
+    }).start();
+
+  }
+
+
+  function tweenCamera(camera, position, duration) {
+
+    // backup original rotation
     var startRotation = camera.quaternion.clone();
 
     // final rotation (with lookAt)
-    camera.lookAt( position );
+    camera.lookAt(position);
     var endRotation = camera.quaternion.clone();
 
     // revert to original rotation
-    camera.quaternion.copy( startRotation );
+    camera.quaternion.copy(startRotation);
 
     controls.target = position;
     // Tween
-    new TWEEN.Tween( camera.quaternion ).to( endRotation, 600 ).onComplete( function () {
-      new TWEEN.Tween(initScale).to(endScale,600).onUpdate(function(){
-        obj.scale = initScale;}).start();
-    } ).start();
+    new TWEEN.Tween(camera.quaternion).to(endRotation, 600).start();
+
+    console.log("hola");
 
 
-     
-}
+  }
 
-  function highlightObject ( e ) {
-// Step 1: Detect light helper
-    //1. sets the mouse position with a coordinate system where the center
-    //   of the screen is the origin
-    mouse.x = ( (event.clientX - event.target.getBoundingClientRect().left) /event.currentTarget.width ) * 2 - 1;
-   mouse.y = - ( (event.clientY - event.target.getBoundingClientRect().top) / event.currentTarget.height ) * 2 + 1;
-    
-    //2. set the picking ray from the camera position and mouse coordinates
-    raycaster.setFromCamera( mouse, camera );    
+  function moverPuntero(e) {
+    //1. se calculan las coordenadas del mouse
+    mouse.x = ((event.clientX - event.target.getBoundingClientRect().left) / event.currentTarget.width) * 2 - 1;
+    mouse.y = - ((event.clientY - event.target.getBoundingClientRect().top) / event.currentTarget.height) * 2 + 1;
 
-    //3. compute intersections (note the 2nd parameter)
-    var intersects = raycaster.intersectObjects( group.children, true );
+    //2. se lanza un raycast desde la cámara en dirección hacia las coordenadas del mouse
+    raycaster.setFromCamera(mouse, camera);
 
-    if ( intersects.length > 0 ) {
-      marker.visible = true;
-      marker.lookAt(intersects[0].face.normal);  // First look At to normal
-      marker.position.copy( intersects[0].point )  // After give position to marker
-      if ( INTERSECTED != intersects[ 0 ].object) {
-          INTERSECTED = intersects[ 0 ].object;
+    //3. se calcula la intersección
+    if (!tieneAnimacion) {
+
+      var intersects = raycaster.intersectObjects(group.children, true);
+
+      if (intersects.length > 0) {
+        marker.visible = true;
+        marker.lookAt(intersects[0].face.normal);  // First look At to normal
+        marker.position.copy(intersects[0].point)  // After give position to marker
+        if (INTERSECTED != intersects[0].object) {
+          INTERSECTED = intersects[0].object;
           //INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
           //INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
           //INTERSECTED.material.emissive.setHex( 0xff0000 );
         }
       }
+
       else {
         marker.visible = false;
-        if ( INTERSECTED  ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-					INTERSECTED = null;
+        if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
+        INTERSECTED = null;
       }
-}
+    }
+  }
 
 
 
@@ -298,7 +381,7 @@ function tweenCamera(camera, position, duration) {
       b: parseInt(result[3], 16)
     } : null;
 
-    
+
   }
 
 

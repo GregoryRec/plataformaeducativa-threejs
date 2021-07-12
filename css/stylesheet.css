@@ -28,6 +28,7 @@
   background-color: #ffffff;
   color: #000000;
   padding: 20px 24px 15px 24px;
+  user-select: none;
   }
   .menu-button-container{
     height: 50px;
@@ -38,7 +39,7 @@
 div.scrollmenu {
   overflow: auto;
   white-space: nowrap;
-  width: 50vw;
+  width: 30vw;
   outline-style: auto;
   outline-color: rgb(39, 39, 39);
   margin-top: 15px;
@@ -68,10 +69,10 @@ div.scrollmenu {
   visibility: hidden;
   position: absolute;
   opacity: 0;
-  margin-top: 70px;
+  margin-top: 50px;
   transition: opacity 1s;
-  margin-left: -25vw;
-  margin-right: 10px;
+  margin-left: 15px;
+  margin-right: -25vw;
   color: rgb(0, 0, 0);
   padding: 10px 10px 10px 10px;
   text-align: justify;
